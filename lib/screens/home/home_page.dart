@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallpaper/api_utility/util_helper.dart';
-import 'package:wallpaper/data/repository/wallpaper_repository.dart';
-import 'package:wallpaper/screens/search/cubit/search_cubit.dart';
 
+import '../../api_utility/util_helper.dart';
 import '../../constants/app_constant.dart';
 import '../../data/remote/api_helper.dart';
+import '../../data/repository/wallpaper_repository.dart';
 import '../../widgets/wallpaper_widget.dart';
+import '../search/cubit/search_cubit.dart';
 import '../search/search_wallpaper_page.dart';
 import '../wallpaper_detail_page.dart';
 import 'cubit/wallpaper_cubit.dart';

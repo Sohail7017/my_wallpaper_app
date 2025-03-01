@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:wallpaper_manager_flutter/wallpaper_manager_flutter.dart';
+import 'package:wallpaper/wallpaper.dart';
 
 
 import '../api_utility/util_helper.dart';
@@ -12,7 +12,7 @@ import '../models/trending_wallpaper_model.dart';
 
 class WallpaperDetailPage extends StatelessWidget {
   Src imageModel;
-  
+
    WallpaperDetailPage({required this.imageModel});
 
   @override
@@ -37,11 +37,11 @@ class WallpaperDetailPage extends StatelessWidget {
                     SizedBox(
                       width: 35,
                     ),
-                
+
                     actionButton(onTap: (){
                       saveWallpaper(context);
                       }, title: "Save", icon: Icons.save_alt_outlined),
-                
+
                     SizedBox(
                       width: 35,
                     ),
@@ -82,7 +82,7 @@ class WallpaperDetailPage extends StatelessWidget {
           height: 5,
         ),
         Text(title,style: mTextStyle16(mColor: Colors.white,mFontWeight: FontWeight.bold),),
-        
+
       ],
     );
   }
@@ -129,21 +129,44 @@ class WallpaperDetailPage extends StatelessWidget {
     //   print("Could not open the gallery");
     // }
   }
+
   void applyWallpaper(BuildContext context) {
-    WallpaperManagerFlutter()
-        .setWallpaperFromFile(
-      imageModel.portrait!,
-      WallpaperManagerFlutter.HOME_SCREEN,
-    )
-        .then((value) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Wallpaper set on Home Screen!")),
-      );
-    }).catchError((e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error setting wallpaper: $e")),
-      );
-    });
+    Wallpaper.imageDownloadProgress(imageModel.portrait!).listen(
+          (event) {},
+      onDone: () async {
+        try {
+          // Apply to Home Screen
+          await Wallpaper.homeScreen(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            options: RequestSizeOptions.resizeFit,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Wallpaper set on Home Screen!")),
+          );
+
+          // Apply to Lock Screen
+          await Wallpaper.lockScreen(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            options: RequestSizeOptions.resizeFit,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Wallpaper set on Lock Screen!")),
+          );
+
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error: $e, Failed to set wallpaper")),
+          );
+        }
+      },
+      onError: (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Download Error: $e")),
+        );
+      },
+    );
   }
 
 /*

@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallpaper/screens/search/cubit/search_wallpaper_state.dart';
-
+import 'package:my_wallpaper/screens/search/cubit/search_wallpaper_state.dart';
 import '../../../data/repository/wallpaper_repository.dart';
 import '../../../models/trending_wallpaper_model.dart';
 

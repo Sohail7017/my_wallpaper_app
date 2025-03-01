@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallpaper/data/repository/wallpaper_repository.dart';
-import 'package:wallpaper/screens/home/cubit/wallpaper_state.dart';
+import 'package:my_wallpaper/screens/home/cubit/wallpaper_state.dart';
 
+import '../../../data/repository/wallpaper_repository.dart';
 import '../../../models/trending_wallpaper_model.dart';
 
 class WallpaperCubit extends Cubit<WallpaperState>{
